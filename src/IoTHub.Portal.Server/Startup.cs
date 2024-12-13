@@ -282,6 +282,7 @@ namespace IoTHub.Portal.Server
             _ = services.AddTransient<IDevicePropertyService, DevicePropertyService>();
             _ = services.AddTransient<IDeviceConfigurationsService, DeviceConfigurationsService>();
             _ = services.AddTransient(typeof(IDeviceModelService<,>), typeof(DeviceModelService<,>));
+            _ = services.AddTransient<ILoRaWanManagementService, LoRaWanManagementService>();
         }
 
         private static void ConfigureServicesAws(IServiceCollection services)
