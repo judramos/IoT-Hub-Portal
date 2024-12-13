@@ -9,6 +9,8 @@ ENV ASPNETCORE_URLS=http://+:80;https://+:443
 
 EXPOSE 80
 EXPOSE 443
+EXPOSE 8000
+EXPOSE 8001
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
