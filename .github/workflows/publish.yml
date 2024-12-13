@@ -58,7 +58,7 @@ jobs:
           # list of Docker images to use as base name for tags
           images: |
             ${{ env.registry_name }}/${{ github.repository_owner }}/${{ env.image_name }}
-            ${{ steps.login-ecr.outputs.registry }}/cgi-fr/${{ env.image_name }}
+            # ${{ steps.login-ecr.outputs.registry }}/cgi-fr/${{ env.image_name }}
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
@@ -131,7 +131,8 @@ jobs:
       
       - name: Update IoTHub Portal docker image tag in app_service.bicep
         working-directory: arm-templates/templates/azure
-        run: sed -i 's/ghcr.io\/cgi-fr\/iothub-portal:latest/ghcr.io\/cgi-fr\/iothub-portal:${{ fromJSON(steps.version.outputs.json).labels['org.opencontainers.image.version'] }}/g' app_service.bicep
+        # run: sed -i 's/ghcr.io\/cgi-fr\/iothub-portal:latest/ghcr.io\/cgi-fr\/iothub-portal:${{ fromJSON(steps.version.outputs.json).labels['org.opencontainers.image.version'] }}/g' app_service.bicep
+        run: sed -i 's/ghcr.io\/${{ github.repository_owner }}\/iothub-portal:latest/ghcr.io\/${{ github.repository_owner }}\/iothub-portal:${{ fromJSON(steps.version.outputs.json).labels['org.opencontainers.image.version'] }}/g' app_service.bicep
       
       # - name: Update IoTHub Portal docker image tag in awsdeploy.yml
       #   working-directory: arm-templates/templates/aws
