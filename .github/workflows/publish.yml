@@ -28,14 +28,14 @@ jobs:
       - id: docker-tag
         uses: yuya-takeyama/docker-tag-from-github-ref-action@v1
 
-      - name: Configure AWS credentials
-        id: aws-credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          # Should use us-east-1 region to push to ECR public registry
-          aws-region: us-east-1
+      # - name: Configure AWS credentials
+      #   id: aws-credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     # Should use us-east-1 region to push to ECR public registry
+      #     aws-region: us-east-1
 
       - name: Docker Login to ACR
         # You may pin to the exact commit or the version.
@@ -45,11 +45,11 @@ jobs:
           username:  ${{ github.actor }}
           password:  ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          registry-type: public
+      # - name: Login to Amazon ECR
+      #   id: login-ecr
+      #   uses: aws-actions/amazon-ecr-login@v2
+      #   with:
+      #     registry-type: public
 
       - name: Docker meta
         id: meta
@@ -133,10 +133,10 @@ jobs:
         working-directory: arm-templates/templates/azure
         run: sed -i 's/ghcr.io\/cgi-fr\/iothub-portal:latest/ghcr.io\/cgi-fr\/iothub-portal:${{ fromJSON(steps.version.outputs.json).labels['org.opencontainers.image.version'] }}/g' app_service.bicep
       
-      - name: Update IoTHub Portal docker image tag in awsdeploy.yml
-        working-directory: arm-templates/templates/aws
-        run: |
-          sed -i 's/public.ecr.aws\/cgi-fr\/iothub-portal:latest/public.ecr.aws\/cgi-fr\/iothub-portal:${{ fromJSON(steps.version.outputs.json).labels['org.opencontainers.image.version'] }}/g' awsdeploy.yml
+      # - name: Update IoTHub Portal docker image tag in awsdeploy.yml
+      #   working-directory: arm-templates/templates/aws
+      #   run: |
+      #     sed -i 's/public.ecr.aws\/cgi-fr\/iothub-portal:latest/public.ecr.aws\/cgi-fr\/iothub-portal:${{ fromJSON(steps.version.outputs.json).labels['org.opencontainers.image.version'] }}/g' awsdeploy.yml
 
       - name: Generate ARM file
         working-directory: arm-templates/templates/azure
@@ -148,11 +148,11 @@ jobs:
           files: 'arm-templates/templates/azure/*.json'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload aws templates to release assets
-        uses: AButler/upload-release-assets@v3.0
-        with:
-          files: 'arm-templates/templates/aws/*.yml'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Upload aws templates to release assets
+      #   uses: AButler/upload-release-assets@v3.0
+      #   with:
+      #     files: 'arm-templates/templates/aws/*.yml'
+      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create PR for template updates
         uses: peter-evans/create-pull-request@v7
